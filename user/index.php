@@ -15,69 +15,8 @@ function connectToDatabase()
 
     return $conn;
 }
-function isImage($url)
-{
-$headers = get_headers($url, 1);
-
-if (isset($headers['Content-Type'])) {
-    $contentType = $headers['Content-Type'];
-
-    if (is_array($contentType)) {
-        $contentType = end($contentType);
-    }
-
-    $imageTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/bmp'];
-
-    return in_array($contentType, $imageTypes);
-}
-
-return false;
-}
 
 
-function updateAvatar($conn, $userId, $avatarURL)
-{
-    $sqlUpdate = "UPDATE users SET avatar = ? WHERE id = ?";
-    $stmtUpdate = $conn->prepare($sqlUpdate);
-    $stmtUpdate->bind_param("si", $avatarURL, $userId);
-
-    if ($stmtUpdate->execute()) {
-
-    } else {
-        echo "Error updating avatar: " . $stmtUpdate->error;
-    }
-
-    $stmtUpdate->close();
-}
-
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $avatarURL = $_POST['avatar'];
-
-    if (isset($_SESSION['user']['id'])) {
-        $userId = $_SESSION['user']['id'];
-
-
-        $conn = connectToDatabase();
-        if (isImage($avatarURL)) {
-            updateAvatar($conn, $userId, $avatarURL);
-
-            echo '<img src="' . $avatarURL . '" alt="User Avatar">';
-            echo '<p>Avatar uploaded successfully!</p>';
-        } else {
-            echo '<p>The provided URL is not a valid image.</p>';
-            echo '<p>Response from the URL:</p>';
-            echo '<pre>';
-            echo file_get_contents($avatarURL);
-            echo '</pre>';
-        }
-
-        $conn->close();
-        } else {
-            echo '<p>User ID not found in the session. Please log in.</p>';
-        }
-        
-} else {
 
     $conn = connectToDatabase();
     $username = $_SESSION['user']['username'];
@@ -90,7 +29,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $stmt->fetch();
     $stmt->close();
-}
 ?>
 
 <!DOCTYPE html>
@@ -110,7 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         img {
-            max-width: 200px; /* Set your desired max-width for the avatar */
+            max-width: 200px; 
             height: auto;
             margin-bottom: 20px;
         }
