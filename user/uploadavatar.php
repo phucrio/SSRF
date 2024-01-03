@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo '<p>The provided URL is not a valid image.</p>';
             echo '<p>Response from the URL:</p>';
             echo '<pre>';
-            echo file_get_contents($avatarURL); 
+            echo file_get_contents($avatarURL);
             echo '</pre>';
         }
     } else {

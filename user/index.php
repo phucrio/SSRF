@@ -16,8 +16,6 @@ function connectToDatabase()
     return $conn;
 }
 
-
-
     $conn = connectToDatabase();
     $username = $_SESSION['user']['username'];
 
